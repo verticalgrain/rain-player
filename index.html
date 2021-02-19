@@ -1,6 +1,8 @@
 <button id="button-loop-1" type="button" value="1">Loop 1</button>
 
 <script id="audio-play" type="text/javascript">
+    var isPlaying = false;
+
     function playAudio() {
         //this is the webaudio loooooppppppp
         //enter url in the next line
@@ -17,7 +19,7 @@
         /* --- load buffer ---  */
         var request = new XMLHttpRequest();
         //open the request
-        request.open('GET', url, true); 
+        request.open('GET', url, true);
         //webaudio paramaters
         request.responseType = 'arraybuffer';
         //Once the request has completed... do this
@@ -38,6 +40,18 @@
     var button = document.getElementById('button-loop-1');
     button.addEventListener('click', function(e) {
         e.preventDefault();
-        playAudio();
+        playAudio()
+        .then(function(result) {
+            console.log( result );
+            if ( isPlaying === true ) {
+                result.stop(0);
+            } else {
+                isPlaying = true;
+            }
+        })
+        .catch(function() {
+            // An error occurred
+        });
+        
     });
 </script>

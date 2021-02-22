@@ -1,19 +1,20 @@
-// self.addEventListener('install', function(event) {
-//     event.waitUntil(
-//       caches.open('justrainsounds').then(function(cache) {
-//         return cache.addAll(
-//           [
-//             'media/rain-loop-1.mp3',
-//             'media/rain-loop-2.mp3',
-//             'media/rain-loop-3.mp3',
-//             'media/rain-loop-4.mp3',
-//             'media/rain-loop-5.mp3',
-//             'media/rain-loop-6.mp3',
-//           ]
-//         );
-//       })
-//     );
-// });
+self.addEventListener('install', function(event) {
+    event.waitUntil(
+      caches.open('justrainsounds').then(function(cache) {
+        return cache.addAll(
+          [
+            'index.html',
+            // 'media/rain-loop-1.mp3',
+            // 'media/rain-loop-2.mp3',
+            // 'media/rain-loop-3.mp3',
+            // 'media/rain-loop-4.mp3',
+            // 'media/rain-loop-5.mp3',
+            // 'media/rain-loop-6.mp3',
+          ]
+        );
+      })
+    );
+});
 
 self.addEventListener('fetch', function(event) {
     event.respondWith(
@@ -23,17 +24,29 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
-// document.querySelector('.sound').addEventListener('click', function(event) {
-//     event.preventDefault();
-//     console.log( event )
-    
-    // caches.open('mysite-article-' + id).then(function(cache) {
-    //   fetch('/get-article-urls?id=' + id).then(function(response) {
-    //     // /get-article-urls returns a JSON-encoded array of
-    //     // resource URLs that a given article depends on
-    //     return response.json();
-    //   }).then(function(urls) {
-    //     cache.addAll(urls);
-    //   });
-    // });
-// });
+// self.addEventListener('fetch', function (event) {
+//     console.log( 'asdfasd' );
+//     event.respondWith(
+//       caches.match(event.request)
+//         .then(function (response) {
+//           if (response) {
+//             return response; // Cache hit
+//           }
+  
+//           return fetch(event.request.clone())
+//             .then(function (response) {
+//               if (!isSuccessful(response)) {
+//                 return response;
+//               }
+  
+//               caches.open(CACHE_NAME)
+//                 .then(function (cache) {
+//                   cache.put(event.request, response.clone());
+//                 });
+  
+//               return response;
+//             }
+//           );
+//         })
+//       );
+//   });

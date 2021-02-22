@@ -1,3 +1,5 @@
+var cacheName = 'r37sk3PWA-v1';
+
 self.addEventListener('install', function(event) {
     event.waitUntil(
       caches.open('justrainsounds').then(function(cache) {
@@ -37,6 +39,7 @@ self.addEventListener('fetch', (e) => {
         });
       })
     );
+    
 });
 
 // self.addEventListener('fetch', function (event) {

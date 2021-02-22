@@ -1,57 +1,200 @@
-<button id="button-loop-1" type="button" value="1">Loop 1</button>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Just rain sounds player iframe">
+    <meta http-equiv="Cache-control" content="public">
 
-<script id="audio-play" type="text/javascript">
-    var isPlaying = false;
-
-    function playAudio() {
-        //this is the webaudio loooooppppppp
-        //enter url in the next line
-        var url  = 'media/rain-loop-2.mp3';
-
-        /* --- set up web audio --- */
-        //create the context
-        var context = new AudioContext();
-        //...and the source
-        var source = context.createBufferSource();
-        //connect it to the destination so you can hear it.
-        source.connect(context.destination);
-
-        /* --- load buffer ---  */
-        var request = new XMLHttpRequest();
-        //open the request
-        request.open('GET', url, true);
-        //webaudio paramaters
-        request.responseType = 'arraybuffer';
-        //Once the request has completed... do this
-        request.onload = function() {
-            context.decodeAudioData(request.response, function(response) {
-                /* --- play the sound AFTER the buffer loaded --- */
-                //set the buffer to the response we just received.
-                source.buffer = response;
-                //start(0) should play asap.
-                source.start(0);
-                source.loop = true;
-            }, function () { console.error('The request failed.'); } );
+    <link rel="canonical" href=".">
+    <title>Just Rain Sounds</title>
+    <script type="text/javascript">
+        if('serviceWorker' in navigator) {
+          navigator.serviceWorker
+            .register('/sw.js')
+            .then(function() { console.log("Justrainsounds Service Worker Registered"); });
         }
-        //Now that the request has been defined, actually make the request. (send it)
-        request.send();
-    }
+    </script>
+    
 
-    var button = document.getElementById('button-loop-1');
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        playAudio()
-        .then(function(result) {
-            console.log( result );
-            if ( isPlaying === true ) {
-                result.stop(0);
-            } else {
-                isPlaying = true;
+  </head>
+  <body>
+
+    <button class="sound" data-js="stop">stop</button>
+    <button class="sound" data-js="rain-1" data-src="media/rain-loop-1.mp3">rain-1</button>
+    <button class="sound" data-js="rain-2" data-src="media/rain-loop-2.mp3">rain-2</button>
+    <button class="sound" data-js="rain-3" data-src="media/rain-loop-4.mp3">rain-3</button>
+    <button class="sound" data-js="rain-4" data-src="media/rain-loop-4.mp3">rain-4</button>
+    <button class="sound" data-js="rain-5" data-src="media/rain-loop-5.mp3">rain-5</button>
+    <button class="sound" data-js="rain-6" data-src="media/rain-loop-6.mp3">rain-6</button>
+
+    <button data-js="fetch">Fetch test</button>
+    
+  </body>
+
+  <script type="text/javascript">
+    var AudioContext = AudioContext || webkitAudioContext,
+        context = new AudioContext(),
+        sounds = [];
+    
+    function createSound(buffer, context) {
+        var sourceNode = null,
+            startedAt = 0,
+            pausedAt = 0,
+            playing = false;
+    
+        var play = function( src ) {
+            var offset = pausedAt;
+    
+            sourceNode = context.createBufferSource();
+            sounds.push( sourceNode );
+            sourceNode.connect(context.destination);
+            sourceNode.buffer = buffer;
+            sourceNode.start(0, offset);
+            sourceNode.loop = true;
+    
+            startedAt = context.currentTime - offset;
+            pausedAt = 0;
+            playing = true;
+        };
+    
+        var pause = function() {
+            var elapsed = context.currentTime - startedAt;
+            stop();
+            pausedAt = elapsed;
+        };
+    
+        var stop = function() {
+            if (sourceNode) {          
+                sourceNode.disconnect();
+                sourceNode.stop(0);
+                sourceNode = null;
             }
-        })
-        .catch(function() {
-            // An error occurred
-        });
-        
+            pausedAt = 0;
+            startedAt = 0;
+            playing = false;
+        };
+      
+        var getPlaying = function() {
+            return playing;
+        };
+      
+        var getCurrentTime = function() {
+            if(pausedAt) {
+                return pausedAt;
+            }
+            if(startedAt) {
+                return context.currentTime - startedAt;
+            }
+            return 0;
+        };
+      
+        var getDuration = function() {
+          return buffer.duration;
+        };
+    
+        return {
+            getCurrentTime: getCurrentTime,
+            getDuration: getDuration,
+            getPlaying: getPlaying,
+            play: play,
+            pause: pause,
+            stop: stop
+        };
+    }
+    
+    function stopSoundAll() {
+        var arrayLength = sounds.length;
+        for(var i = 0; i < arrayLength; i++)
+            if (sounds[i]) {
+                sounds[i].disconnect(0);
+                sounds[i].stop(0);
+            }
+        // Clear the sounds array
+        sounds.length = 0;
+    }
+    
+    var init = function(buffer) {
+        var sound = createSound(buffer, context);
+    
+        sound.play();
+        context.resume();
+    };
+    
+    var rain1 = document.querySelector('[data-js="rain-1"]'),
+        rain2 = document.querySelector('[data-js="rain-2"]'),
+        rain3 = document.querySelector('[data-js="rain-3"]'),
+        rain4 = document.querySelector('[data-js="rain-4"]'),
+        rain5 = document.querySelector('[data-js="rain-5"]'),
+        rain6 = document.querySelector('[data-js="rain-6"]'),
+        stop = document.querySelector('[data-js="stop"]'),
+        fetch = document.querySelector('[data-js="fetch"]');
+    
+    rain1.addEventListener('click', function() {
+        stopSoundAll();
+        request( 'media/rain-loop-1.mp3' );
     });
-</script>
+    
+    rain2.addEventListener('click', function() {
+        stopSoundAll();
+        request( 'media/rain-loop-2.mp3' );
+    });
+    
+    rain3.addEventListener('click', function() {
+        stopSoundAll();
+        request( 'media/rain-loop-3.mp3' );
+    });
+    
+    rain4.addEventListener('click', function() {
+        stopSoundAll();
+        request( 'media/rain-loop-4.mp3' );
+    });
+    
+    rain5.addEventListener('click', function() {
+        stopSoundAll();
+        request( 'media/rain-loop-5.mp3' );
+    });
+    
+    rain6.addEventListener('click', function() {
+        stopSoundAll();
+        request( 'media/rain-loop-6.mp3' );
+    });
+    
+    stop.addEventListener('click', function() {
+        stopSoundAll();
+    });
+
+    fetch.addEventListener('click', function() {
+        var outside
+
+        fetch('https://www.mixmeals.com/images/recipe/butternut-squash-sausage-600x457.jpg')
+        .then(response => response.blob())
+        .then(images => {
+            // Then create a local URL for that image and print it 
+            outside = URL.createObjectURL(images)
+            console.log(outside)
+        })
+    });
+    
+    var request = function( url ) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        request.setRequestHeader("Cache-Control", "max-stale");
+        request.responseType = 'arraybuffer';
+        request.addEventListener('load', function() {
+            context.decodeAudioData(
+                request.response,
+                function(buffer) {
+                    init(buffer);
+                },
+                function(e) {
+                    console.error('ERROR: context.decodeAudioData:', e);
+                }
+            );
+        });
+        request.send();
+    
+    }
+    
+    </script>
+</html>

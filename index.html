@@ -8,6 +8,7 @@
 
     <link rel="canonical" href=".">
     <title>Just Rain Sounds</title>
+    <link rel="stylesheet" href="style.css">
     <script type="text/javascript">
         if('serviceWorker' in navigator) {
           navigator.serviceWorker
@@ -19,17 +20,16 @@
 
   </head>
   <body>
+    <button class="stop" data-js="stop">stop</button>
+    <div class="sounds-list">
+        <input type="checkbox" class="sound" id="rain-1" data-js="rain-1" data-src="media/rain-loop-1.mp3" /><label for="rain-1">Ferocious</label>
+        <input type="checkbox" class="sound" id="rain-2" data-js="rain-2" data-src="media/rain-loop-2.mp3" /><label for="rain-2">Steady</label>
+        <input type="checkbox" class="sound" id="rain-3" data-js="rain-3" data-src="media/rain-loop-3.mp3" /><label for="rain-3">Smooth</label>
+        <input type="checkbox" class="sound" id="rain-4" data-js="rain-4" data-src="media/rain-loop-4.mp3" /><label for="rain-4">Stormy</label>
+        <input type="checkbox" class="sound" id="rain-5" data-js="rain-5" data-src="media/rain-loop-5.mp3" /><label for="rain-5">Calm</label>
+        <input type="checkbox" class="sound" id="rain-6" data-js="rain-6" data-src="media/rain-loop-6.mp3" /><label for="rain-6">Moody</label>
+    </div>
 
-    <button class="sound" data-js="stop">stop</button>
-    <button class="sound" data-js="rain-1" data-src="media/rain-loop-1.mp3">rain-1</button>
-    <button class="sound" data-js="rain-2" data-src="media/rain-loop-2.mp3">rain-2</button>
-    <button class="sound" data-js="rain-3" data-src="media/rain-loop-4.mp3">rain-3</button>
-    <button class="sound" data-js="rain-4" data-src="media/rain-loop-4.mp3">rain-4</button>
-    <button class="sound" data-js="rain-5" data-src="media/rain-loop-5.mp3">rain-5</button>
-    <button class="sound" data-js="rain-6" data-src="media/rain-loop-6.mp3">rain-6</button>
-
-    <button data-js="fetch">Fetch test</button>
-    
   </body>
 
   <script type="text/javascript">
@@ -121,64 +121,24 @@
         context.resume();
     };
     
-    var rain1 = document.querySelector('[data-js="rain-1"]'),
-        rain2 = document.querySelector('[data-js="rain-2"]'),
-        rain3 = document.querySelector('[data-js="rain-3"]'),
-        rain4 = document.querySelector('[data-js="rain-4"]'),
-        rain5 = document.querySelector('[data-js="rain-5"]'),
-        rain6 = document.querySelector('[data-js="rain-6"]'),
-        stop = document.querySelector('[data-js="stop"]'),
-        fetchbutton = document.querySelector('[data-js="fetch"]');
-    
-    rain1.addEventListener('click', function() {
-        stopSoundAll();
-        request( 'media/rain-loop-1.mp3' );
-    });
-    
-    rain2.addEventListener('click', function() {
-        stopSoundAll();
-        request( 'media/rain-loop-2.mp3' );
-    });
-    
-    rain3.addEventListener('click', function() {
-        stopSoundAll();
-        request( 'media/rain-loop-3.mp3' );
-    });
-    
-    rain4.addEventListener('click', function() {
-        stopSoundAll();
-        request( 'media/rain-loop-4.mp3' );
-    });
-    
-    rain5.addEventListener('click', function() {
-        stopSoundAll();
-        request( 'media/rain-loop-5.mp3' );
-    });
-    
-    rain6.addEventListener('click', function() {
-        stopSoundAll();
-        request( 'media/rain-loop-6.mp3' );
-    });
+    var stop = document.querySelector('[data-js="stop"]');
+
+    document.querySelectorAll('.sound').forEach(item => {
+        item.addEventListener('change', event => {
+            if ( item.checked ) {
+                var mediaSrc = item.getAttribute('data-src');
+                stopSoundAll();
+                request( mediaSrc );
+            } else {
+                stopSoundAll();
+            }
+        })
+    })
     
     stop.addEventListener('click', function() {
         stopSoundAll();
     });
 
-    fetchbutton.addEventListener('click', function() {
-        // var outside
-
-        // fetch('https://www.mixmeals.com/images/recipe/butternut-squash-sausage-600x457.jpg')
-        // .then(response => response.blob())
-        // .then(images => {
-        //     // Then create a local URL for that image and print it 
-        //     outside = URL.createObjectURL(images)
-        //     console.log(outside)
-        // })
-        fetch('https://jsonplaceholder.typicode.com/todos/1')
-            .then(response => response.json())
-            .then(json => console.log(json))
-    });
-    
     var request = function( url ) {
         var request = new XMLHttpRequest();
         request.open('GET', url, true);

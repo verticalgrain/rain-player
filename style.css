@@ -1,0 +1,33 @@
+.sounds-list {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+}
+
+input.sound {
+    display: none;
+}
+
+input.sound + label {
+    width: calc(25% - 5px);
+    height: 105px;
+    display: flex;
+    background: #f6f6f4;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+    input.sound + label {
+        width: calc(25% - 5px);
+    }
+}
+
+@media (max-width: 400px) {
+    input.sound + label {
+        width: calc(33% - 5px);
+    }
+}
+
+input.sound:checked + label {
+    background: rgba(0,0,0,0.1);
+}

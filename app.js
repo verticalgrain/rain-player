@@ -1,6 +1,9 @@
 var AudioContext = AudioContext || webkitAudioContext,
     context = new AudioContext(),
-    sounds = [];
+    sounds = [],
+    stop = document.querySelector('[data-js="stop"]'),
+    soundButtons = document.querySelectorAll('.sound-button'),
+    soundButtonActiveClass = 'sound-button--active';
 
 function createSound(buffer, context) {
     var sourceNode = null,
@@ -30,7 +33,7 @@ function createSound(buffer, context) {
     };
 
     var stop = function() {
-        if (sourceNode) {          
+        if (sourceNode) {
             sourceNode.disconnect();
             sourceNode.stop(0);
             sourceNode = null;
@@ -39,11 +42,11 @@ function createSound(buffer, context) {
         startedAt = 0;
         playing = false;
     };
-    
+
     var getPlaying = function() {
         return playing;
     };
-    
+
     var getCurrentTime = function() {
         if(pausedAt) {
             return pausedAt;
@@ -53,7 +56,7 @@ function createSound(buffer, context) {
         }
         return 0;
     };
-    
+
     var getDuration = function() {
         return buffer.duration;
     };
@@ -81,28 +84,9 @@ function stopSoundAll() {
 
 var init = function(buffer) {
     var sound = createSound(buffer, context);
-
     sound.play();
     context.resume();
 };
-
-var stop = document.querySelector('[data-js="stop"]');
-
-document.querySelectorAll('.sound').forEach(item => {
-    item.addEventListener('change', event => {
-        if ( item.checked ) {
-            var mediaSrc = item.getAttribute('data-src');
-            stopSoundAll();
-            request( mediaSrc );
-        } else {
-            stopSoundAll();
-        }
-    })
-})
-
-stop.addEventListener('click', function() {
-    stopSoundAll();
-});
 
 var request = function( url ) {
     var request = new XMLHttpRequest();
@@ -121,5 +105,31 @@ var request = function( url ) {
         );
     });
     request.send();
-
 }
+
+// Dom manipulation
+
+function removeClasses() {
+    for (var i = 0; i < soundButtons.length; i++) {
+        soundButtons[i].classList.remove(soundButtonActiveClass)
+    }
+}
+
+// Event Listeners
+
+soundButtons.forEach(item => {
+    item.addEventListener('click', event => {
+        // Remove active class from all buttons
+        removeClasses();
+        // add active class to this button
+        item.classList.add(soundButtonActiveClass);
+        var mediaSrc = item.getAttribute('data-src');
+        stopSoundAll();
+        request( mediaSrc );
+    })
+})
+
+stop.addEventListener('click', function() {
+    removeClasses();
+    stopSoundAll();
+});

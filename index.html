@@ -16,18 +16,19 @@
             .then(function() { console.log("Justrainsounds Service Worker Registered"); });
         }
     </script>
-    
 
   </head>
   <body>
-    <button class="stop" data-js="stop">stop</button>
-    <div class="sounds-list">
-        <input type="checkbox" class="sound" id="rain-1" data-js="rain-1" data-src="media/rain-loop-1.mp3" /><label for="rain-1">Ferocious</label>
-        <input type="checkbox" class="sound" id="rain-2" data-js="rain-2" data-src="media/rain-loop-2.mp3" /><label for="rain-2">Steady</label>
-        <input type="checkbox" class="sound" id="rain-3" data-js="rain-3" data-src="media/rain-loop-3.mp3" /><label for="rain-3">Smooth</label>
-        <input type="checkbox" class="sound" id="rain-4" data-js="rain-4" data-src="media/rain-loop-4.mp3" /><label for="rain-4">Stormy</label>
-        <input type="checkbox" class="sound" id="rain-5" data-js="rain-5" data-src="media/rain-loop-5.mp3" /><label for="rain-5">Calm</label>
-        <input type="checkbox" class="sound" id="rain-6" data-js="rain-6" data-src="media/rain-loop-6.mp3" /><label for="rain-6">Moody</label>
+    <div class="container">
+      <div class="sounds-list">
+        <button class="stop-button" data-js="stop"><div class="stop-button__inner">stop</div></button>
+        <button class="sound-button" id="rain-1" data-js="rain-1" data-src="media/rain-loop-1.mp3"><div class="sound-button__inner">Ferocious</div></button>
+        <button class="sound-button" id="rain-2" data-js="rain-2" data-src="media/rain-loop-2.mp3"><div class="sound-button__inner">Steady</div></button>
+        <button class="sound-button" id="rain-3" data-js="rain-3" data-src="media/rain-loop-3.mp3"><div class="sound-button__inner">Smooth</div></button>
+        <button class="sound-button" id="rain-4" data-js="rain-4" data-src="media/rain-loop-4.mp3"><div class="sound-button__inner">Stormy</div></button>
+        <button class="sound-button" id="rain-5" data-js="rain-5" data-src="media/rain-loop-5.mp3"><div class="sound-button__inner">Calm</div></button>
+        <button class="sound-button" id="rain-6" data-js="rain-6" data-src="media/rain-loop-6.mp3"><div class="sound-button__inner">Moody</div></button>
+      </div>
     </div>
 
   </body>

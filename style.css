@@ -1,8 +1,18 @@
+html,
+body {
+    margin: 0;
+}
+
 .sounds-list {
     display: flex;
     justify-content: space-between;
     max-width: 800px;
     flex-wrap: wrap;
+}
+
+.sounds-list:after {
+    content: "";
+    flex: auto;
 }
 
 .sound-button,
@@ -17,6 +27,15 @@
     padding-bottom: 32%;
     position: relative;
     background: transparent;
+    outline: none;
+}
+
+@media (min-width: 767px) {
+    .sound-button,
+    .stop-button {
+        width: calc(19.7% - 5px);
+        padding-bottom: 19%;
+    }
 }
 
 .sound-button__inner,
@@ -27,28 +46,29 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #f6f6f4;
     border-radius: 5px;
+    background-color: #f6f6f4;
+    background-size: 35%;
+    background-repeat: no-repeat;
+    background-position: center 20%;
+    color: #686868;
+    font-size: 14px;
+    box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 10%);
 }
 
 .sound-button--active .sound-button__inner {
-    background: #9bd7d5;
+    background-color: #9bd7d5;
+    color: #f2f2f2;
 }
 
-@media (max-width: 600px) {
-    input.sound + label {
-        width: calc(25% - 5px);
-    }
+.sound-button__inner svg {
+    width: 30%;
+    margin: 20% 0 10%;
 }
 
-@media (max-width: 400px) {
-    input.sound + label {
-        width: calc(33% - 5px);
-    }
-}
-
-input.sound:checked + label {
-    background: rgba(0,0,0,0.1);
+.sound-button--active .sound-button__inner svg .st0 {
+    stroke: #f2f2f2;
 }

@@ -107,6 +107,15 @@ var request = function( url ) {
     request.send();
 }
 
+function requestFetch( url ) {
+    fetch(url)
+    .then(resp => resp.arrayBuffer())
+    .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
+    .then(audioBuffer => {
+        init(audioBuffer);
+    })
+}
+
 // Dom manipulation
 
 function removeClasses() {
@@ -125,7 +134,8 @@ soundButtons.forEach(item => {
         item.classList.add(soundButtonActiveClass);
         var mediaSrc = item.getAttribute('data-src');
         stopSoundAll();
-        request( mediaSrc );
+        // request( mediaSrc );
+        requestFetch( mediaSrc );
     })
 })
 

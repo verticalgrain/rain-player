@@ -1,6 +1,7 @@
 html,
 body {
     margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 .sounds-list {
@@ -71,4 +72,14 @@ body {
 
 .sound-button--active .sound-button__inner svg .st0 {
     stroke: #f2f2f2;
+}
+
+#connection-status {
+    height: 14px;
+    text-align: right;
+    font-size: 10px;
+    margin-bottom: 10px;
+    color: #666;
+    text-transform: uppercase;
+    font-weight: 700;
 }

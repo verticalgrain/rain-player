@@ -3,7 +3,8 @@ var AudioContext = AudioContext || webkitAudioContext,
     sounds = [],
     stop = document.querySelector('[data-js="stop"]'),
     soundButtons = document.querySelectorAll('.sound-button'),
-    soundButtonActiveClass = 'sound-button--active';
+    soundButtonActiveClass = 'sound-button--active',
+    connectionStatus = 'connection-status';
 
 function createSound(buffer, context) {
     var sourceNode = null,
@@ -123,6 +124,22 @@ function removeClasses() {
         soundButtons[i].classList.remove(soundButtonActiveClass)
     }
 }
+
+window.addEventListener("load", (event) => {
+    const statusDisplay = document.getElementById(connectionStatus);
+    statusDisplay.textContent = navigator.onLine ? " " : "offline";
+});
+
+window.addEventListener("offline", (event) => {
+    const statusDisplay = document.getElementById(connectionStatus);
+    statusDisplay.textContent = "offline";
+});
+
+window.addEventListener("online", (event) => {
+    const statusDisplay = document.getElementById(connectionStatus);
+    statusDisplay.textContent = " ";
+});
+
 
 // Event Listeners
 

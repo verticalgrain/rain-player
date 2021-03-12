@@ -16,47 +16,36 @@ body {
     flex: auto;
 }
 
-.sound-button,
-.stop-button {
-    width: calc(33% - 5px);
-    height: 0;
+.sound-button {
+    width: 100%;
+    height: 65px;
     display: flex;
     margin-bottom: 10px;
     appearance: none;
     -webkit-appearance: none;
     border: 0;
-    padding-bottom: 32%;
     position: relative;
     background: transparent;
     outline: none;
+    padding: 0;
 }
 
 @media (min-width: 767px) {
-    .sound-button,
-    .stop-button {
-        width: calc(19.7% - 5px);
-        padding-bottom: 19%;
-    }
+    
 }
 
-.sound-button__inner,
-.stop-button__inner {
-    position: absolute;
-    left: 0;
-    top: 0;
+.sound-button__inner {
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     border-radius: 5px;
     background-color: #f6f6f4;
-    background-size: 35%;
-    background-repeat: no-repeat;
-    background-position: center 20%;
     color: #686868;
-    font-size: 14px;
+    font-size: 18px;
+    letter-spacing: 0.5px;
     box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 10%);
 }
 
@@ -66,8 +55,9 @@ body {
 }
 
 .sound-button__inner svg {
-    width: 30%;
-    margin: 20% 0 10%;
+    width: 34px;
+    height: auto;
+    margin-right: 10px;
 }
 
 .sound-button--active .sound-button__inner svg .st0 {

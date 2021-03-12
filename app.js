@@ -1,7 +1,6 @@
 var AudioContext = AudioContext || webkitAudioContext,
     context = new AudioContext(),
     sounds = [],
-    stop = document.querySelector('[data-js="stop"]'),
     soundButtons = document.querySelectorAll('.sound-button'),
     soundButtonActiveClass = 'sound-button--active',
     connectionStatus = 'connection-status';
@@ -145,18 +144,22 @@ window.addEventListener("online", (event) => {
 
 soundButtons.forEach(item => {
     item.addEventListener('click', event => {
-        // Remove active class from all buttons
-        removeClasses();
-        // add active class to this button
-        item.classList.add(soundButtonActiveClass);
-        var mediaSrc = item.getAttribute('data-src');
-        stopSoundAll();
-        // request( mediaSrc );
-        requestFetch( mediaSrc );
+        if ( item.classList.contains("sound-button--active") ) {
+            // Stop all sounds from playing
+            stopSoundAll();
+            // Remove active class from all buttons
+            removeClasses();
+        } else {
+            // Remove active class from all buttons
+            removeClasses();
+            // Add active class to this button
+            item.classList.add(soundButtonActiveClass);
+            // Get url of sound file
+            var mediaSrc = item.getAttribute('data-src');
+            // Stop all sounds from plahing
+            stopSoundAll();
+            // Fetch the mp3 file
+            requestFetch( mediaSrc );
+        }
     })
 })
-
-stop.addEventListener('click', function() {
-    removeClasses();
-    stopSoundAll();
-});

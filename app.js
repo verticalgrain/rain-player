@@ -107,11 +107,12 @@ var request = function( url ) {
     request.send();
 }
 
-function requestFetch( url ) {
+function requestFetch( url, element ) {
     fetch(url)
     .then(resp => resp.arrayBuffer())
     .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
     .then(audioBuffer => {
+        element.classList.add("sound-button--cached")
         init(audioBuffer);
     })
 }
@@ -143,6 +144,24 @@ window.addEventListener("online", (event) => {
 // Event Listeners
 
 soundButtons.forEach(item => {
+
+    // Get url of sound file
+    var mediaSrc = item.getAttribute('data-src');
+
+    // On Page load
+    try {
+        fetch( mediaSrc,
+            {
+                method:'Head',
+                cache:'only-if-cached',
+                mode:'same-origin'
+            } )
+        .then( console.log( 'asdfasdf' ) )
+    } catch (error) {
+        console.log(error)
+        console.error(error);
+    }
+
     item.addEventListener('click', event => {
         if ( item.classList.contains("sound-button--active") ) {
             // Stop all sounds from playing
@@ -154,12 +173,12 @@ soundButtons.forEach(item => {
             removeClasses();
             // Add active class to this button
             item.classList.add(soundButtonActiveClass);
-            // Get url of sound file
-            var mediaSrc = item.getAttribute('data-src');
             // Stop all sounds from plahing
             stopSoundAll();
             // Fetch the mp3 file
-            requestFetch( mediaSrc );
+            requestFetch( mediaSrc, item );
         }
     })
 })
+
+

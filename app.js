@@ -3,7 +3,8 @@ var AudioContext = AudioContext || webkitAudioContext,
     sounds = [],
     soundButtons = document.querySelectorAll('.sound-button'),
     soundButtonActiveClass = 'sound-button--active',
-    connectionStatus = 'connection-status';
+    connectionStatus = 'connection-status',
+    cachedFiles = [];
 
 function createSound(buffer, context) {
     var sourceNode = null,
@@ -128,6 +129,15 @@ function removeClasses() {
 window.addEventListener("load", (event) => {
     const statusDisplay = document.getElementById(connectionStatus);
     statusDisplay.textContent = navigator.onLine ? " " : "offline";
+
+    caches.open('r37sk3PWA-v1').then(cache => {
+        cache.keys().then(cachedItems => {
+            cachedItems.map( item => {
+                cachedFiles.push( item.url )
+            } )
+            console.log( cachedFiles )
+        })
+    })
 });
 
 window.addEventListener("offline", (event) => {
@@ -147,20 +157,6 @@ soundButtons.forEach(item => {
 
     // Get url of sound file
     var mediaSrc = item.getAttribute('data-src');
-
-    // On Page load
-    try {
-        fetch( mediaSrc,
-            {
-                method:'Head',
-                cache:'only-if-cached',
-                mode:'same-origin'
-            } )
-        .then( console.log( 'asdfasdf' ) )
-    } catch (error) {
-        console.log(error)
-        console.error(error);
-    }
 
     item.addEventListener('click', event => {
         if ( item.classList.contains("sound-button--active") ) {

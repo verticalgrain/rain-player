@@ -3,6 +3,7 @@ var AudioContext = AudioContext || webkitAudioContext,
     sounds = [],
     soundButtons = document.querySelectorAll('.sound-button'),
     soundButtonActiveClass = 'sound-button--active',
+    soundButtonCachedClass = 'sound-button--cached',
     connectionStatus = 'connection-status',
     cachedFiles = [];
 
@@ -113,31 +114,68 @@ function requestFetch( url, element ) {
     .then(resp => resp.arrayBuffer())
     .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
     .then(audioBuffer => {
-        element.classList.add("sound-button--cached")
+        element.classList.add(soundButtonCachedClass)
         init(audioBuffer);
+    })
+}
+
+function initSoundButtons() {
+    soundButtons.forEach(item => {
+
+        // Get url of sound file
+        var mediaSrc = item.getAttribute('data-src');
+
+        // Check if sound file exists in cache
+        var isCached = cachedFiles.some( cachedFile => cachedFile.includes( mediaSrc ));
+        isCached && item.classList.add(soundButtonCachedClass)
+
+        item.addEventListener('click', event => {
+            if ( item.classList.contains("sound-button--active") ) {
+                // Stop all sounds from playing
+                stopSoundAll();
+                // Remove active class from all buttons
+                removeActiveClassAll();
+            } else {
+                // Remove active class from all buttons
+                removeActiveClassAll();
+                // Add active class to this button
+                item.classList.add(soundButtonActiveClass);
+                // Stop all sounds from plahing
+                stopSoundAll();
+                // Fetch the mp3 file
+                requestFetch( mediaSrc, item );
+            }
+        })
     })
 }
 
 // Dom manipulation
 
-function removeClasses() {
+function removeActiveClassAll() {
     for (var i = 0; i < soundButtons.length; i++) {
         soundButtons[i].classList.remove(soundButtonActiveClass)
     }
 }
 
-window.addEventListener("load", (event) => {
-    const statusDisplay = document.getElementById(connectionStatus);
-    statusDisplay.textContent = navigator.onLine ? " " : "offline";
+// Event Listeners
 
+window.addEventListener("DOMContentLoaded", (event) => {
+    // Get a list of files in the cache
     caches.open('r37sk3PWA-v1').then(cache => {
         cache.keys().then(cachedItems => {
             cachedItems.map( item => {
                 cachedFiles.push( item.url )
             } )
-            console.log( cachedFiles )
+        })
+        .then( thing => {
+            initSoundButtons();
         })
     })
+})
+
+window.addEventListener("load", (event) => {
+    const statusDisplay = document.getElementById(connectionStatus);
+    statusDisplay.textContent = navigator.onLine ? " " : "offline";
 });
 
 window.addEventListener("offline", (event) => {
@@ -149,32 +187,3 @@ window.addEventListener("online", (event) => {
     const statusDisplay = document.getElementById(connectionStatus);
     statusDisplay.textContent = " ";
 });
-
-
-// Event Listeners
-
-soundButtons.forEach(item => {
-
-    // Get url of sound file
-    var mediaSrc = item.getAttribute('data-src');
-
-    item.addEventListener('click', event => {
-        if ( item.classList.contains("sound-button--active") ) {
-            // Stop all sounds from playing
-            stopSoundAll();
-            // Remove active class from all buttons
-            removeClasses();
-        } else {
-            // Remove active class from all buttons
-            removeClasses();
-            // Add active class to this button
-            item.classList.add(soundButtonActiveClass);
-            // Stop all sounds from plahing
-            stopSoundAll();
-            // Fetch the mp3 file
-            requestFetch( mediaSrc, item );
-        }
-    })
-})
-
-

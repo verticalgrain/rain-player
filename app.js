@@ -5,6 +5,8 @@ var AudioContext = AudioContext || webkitAudioContext,
     soundButtonActiveClass = 'sound-button--active',
     soundButtonCachedClass = 'sound-button--cached',
     connectionStatus = 'connection-status',
+    soundButtonFetchStartClass = 'sound-button--fetch-started',
+    soundButtonFetchDoneClass = 'sound-button--fetch-done',
     cachedFiles = [];
 
 function createSound(buffer, context) {
@@ -110,10 +112,13 @@ var request = function( url ) {
 }
 
 function requestFetch( url, element ) {
+    element.classList.add(soundButtonFetchStartClass)
+
     fetch(url)
     .then(resp => resp.arrayBuffer())
     .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
     .then(audioBuffer => {
+        element.classList.add(soundButtonFetchDoneClass)
         element.classList.add(soundButtonCachedClass)
         init(audioBuffer);
     })

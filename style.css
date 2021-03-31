@@ -108,8 +108,8 @@ to {
 .sound-button__tags,
 .sound-button__filesize {
     position: absolute;
-    bottom: 5px;
-    left: 5px;
+    bottom: 10px;
+    left: 10px;
     font-size: 11px;
     color: #666;
     transition-duration: 0.5s;
@@ -117,7 +117,7 @@ to {
 
 .sound-button__filesize {
     left: initial;
-    right: 5px;
+    right: 10px;
 }
 
 .sound-button--active .sound-button__inner {
@@ -155,8 +155,8 @@ to {
     width: 20px;
     height: 20px;
     position: absolute;
-    right: 5px;
-    bottom: 5px;
+    right: 10px;
+    bottom: 10px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' id='_x31_px' enable-background='new 0 0 24 24' height='24' viewBox='0 0 24 24' width='24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%2331af91' stroke='black'/%3E%3Cpath fill='black' d='m17.5 18h-11c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h11c.276 0 .5.224.5.5s-.224.5-.5.5z'/%3E%3Cpath fill='black' d='m12 15.75c-.276 0-.5-.224-.5-.5v-9.75c0-.276.224-.5.5-.5s.5.224.5.5v9.75c0 .277-.224.5-.5.5z'/%3E%3Cpath fill='black' d='m12 16c-.128 0-.256-.049-.354-.146l-3.5-3.5c-.195-.195-.195-.512 0-.707s.512-.195.707 0l3.147 3.146 3.146-3.146c.195-.195.512-.195.707 0s.195.512 0 .707l-3.5 3.5c-.097.097-.225.146-.353.146z'/%3E%3C/svg%3E");
     background-size: 18px;
     background-repeat: no-repeat;
